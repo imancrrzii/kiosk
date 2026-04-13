@@ -1,1 +1,31 @@
 @import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Manrope', sans-serif;
+  }
+
+  h1 {
+    @apply text-4xl leading-tight font-bold text-gray-900;
+  }
+
+  h2 {
+    @apply text-3xl leading-tight font-bold text-gray-900;
+  }
+
+  h3 {
+    @apply text-2xl leading-snug font-bold text-gray-900;
+  }
+
+  h4 {
+    @apply text-lg leading-snug font-bold text-gray-900;
+  }
+
+  p {
+    @apply text-base leading-relaxed text-gray-900;
+  }
+
+  /* span {
+    @apply text-base;
+  } */
+}
