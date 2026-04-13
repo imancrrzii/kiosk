@@ -1,8 +1,85 @@
 @import "tailwindcss";
 
+@theme {
+  --font-display: "Manrope", sans-serif;
+  --color-bsb-500: #00aeef;
+  --color-bsb-red-500: #ff0000;
+}
+
 @layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+    font-family: var(--font-display);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+
+  html,
   body {
-    font-family: 'Manrope', sans-serif;
+    overflow-x: hidden;
+  }
+
+  @font-face {
+    font-family: "Manrope";
+    src: url(./assets/fonts/Manrope-Light.ttf) format("truetype");
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Manrope";
+    src: url(./assets/fonts/Manrope-Regular.ttf) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Medium */
+  @font-face {
+    font-family: "Manrope";
+    src: url(./assets/fonts/Manrope-Medium.ttf) format("truetype");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Semibold */
+  @font-face {
+    font-family: "Manrope";
+    src: url(./assets/fonts/Manrope-SemiBold.ttf) format("truetype");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* Bold */
+  @font-face {
+    font-family: "Manrope";
+    src: url(./assets/fonts/Manrope-Bold.ttf) format("truetype");
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  /* ExtraBold */
+  @font-face {
+    font-family: "Manrope";
+    src: url(./assets/fonts/Manrope-ExtraBold.ttf) format("truetype");
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  body {
+    font-family: "Manrope", sans-serif;
   }
 
   h1 {
