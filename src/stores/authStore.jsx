@@ -1,70 +1,74 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { decryptData, encryptData } from "../utils/helpers";
 
-const authStore = create(
+const useAuthStore = create(
   persist(
     (set, get) => ({
+      token: null,
+      user: null,
       isAuthenticated: false,
+      isLoading: false,
       error: null,
 
-      setUser: (userData) => {
-        try {
-          const encryptedUser = {
-            email: encryptData(userData.email || ""),
-            role: encryptData(userData.role || ""),
-            id: encryptData(userData.id || ""),
-          };
-
-          set({
-            user: encryptedUser,
-            isAuthenticated: true,
-            error: null,
-          });
-        } catch (error) {
-          console.error(error);
-          set({ error: "Failed to set user data" });
-        }
-      },
-
-      clearUser: () => {
+      setAuth: (token, user) => {
         set({
-          user: null,
-          isAuthenticated: false,
+          token,
+          user,
+          isAuthenticated: true,
           error: null,
         });
       },
 
-      setError: (message) => {
-        set({ error: message });
+      setUser: (user) => {
+        set({ user });
+      },
+
+      setLoading: (isLoading) => {
+        set({ isLoading });
+      },
+
+      setError: (error) => {
+        set({ error });
       },
 
       clearError: () => {
         set({ error: null });
       },
 
-      getDecryptedUser: () => {
+      logout: () => {
+        localStorage.removeItem("queue-auth-storage"); // 🔥 penting
+        set({
+          token: null,
+          user: null,
+          isAuthenticated: false,
+          error: null,
+        });
+      },
+
+      getToken: () => {
+        return get().token;
+      },
+
+      getUser: () => {
+        return get().user;
+      },
+
+      hasRole: (role) => {
         const { user } = get();
+        if (!user) return false;
+        return user.role === role;
+      },
 
-        if (!user) {
-          return null;
-        }
-
-        try {
-          return {
-            email: decryptData(user.email),
-            role: decryptData(user.role),
-            id: decryptData(user.id),
-          };
-        } catch (error) {
-          console.error(error);
-          return null;
-        }
+      hasAnyRole: (roles = []) => {
+        const { user } = get();
+        if (!user) return false;
+        return roles.includes(user.role);
       },
     }),
     {
-      name: "user-kiosk-storage",
+      name: "queue-auth-storage",
       partialize: (state) => ({
+        token: state.token,
         user: state.user,
         isAuthenticated: state.isAuthenticated,
       }),
@@ -72,4 +76,4 @@ const authStore = create(
   ),
 );
 
-export default authStore;
+export default useAuthStore;

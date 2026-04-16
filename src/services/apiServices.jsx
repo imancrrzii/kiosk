@@ -3,7 +3,6 @@ import { AuthService } from "./authServices";
 import { SignatureService } from "./signatureServices";
 import mappingMsgService from "./mappingMsgServices";
 import http from "@/utils/http";
-import { API_BASE_URL } from "@/constant/api";
 
 export async function doLogin(credentials) {
   const store = authStore.getState();
@@ -111,19 +110,3 @@ export async function doRefreshToken() {
     return null;
   }
 }
-
-export const api = async (path, opts = {}) => {
-  const token = localStorage.getItem("queue_token");
-  const res = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      "Content-Type": "application/json",
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-    ...opts,
-  });
-  if (!res.ok) {
-    const e = await res.json().catch(() => ({}));
-    throw new Error(e.detail || "Request gagal");
-  }
-  return res.json();
-};

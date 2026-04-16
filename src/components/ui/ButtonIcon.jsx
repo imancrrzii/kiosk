@@ -49,17 +49,9 @@ const variantConfig = {
   },
 };
 
-const ButtonIcon = ({
-  icon = faPlus,
-  onClick,
-  variant = "primary",
-  disabled = false,
-  size = "large",
-}) => {
+const ButtonIcon = ({ icon = faPlus, onClick, variant = "primary", disabled = false, size = "large" }) => {
   const config = sizeConfig[size] || sizeConfig.large;
-  const variantClass = disabled
-    ? variantConfig.disabled[variant]
-    : variantConfig[variant];
+  const variantClass = disabled ? variantConfig.disabled[variant] : variantConfig[variant];
 
   return (
     <button
@@ -74,7 +66,14 @@ const ButtonIcon = ({
         select-none
       `}
     >
-      <FontAwesomeIcon icon={icon} style={{ fontSize: config.icon, width: config.icon, height: config.icon }} />
+      <FontAwesomeIcon
+        icon={icon}
+        style={{
+          fontSize: config.icon,
+          width: config.icon,
+          height: config.icon,
+        }}
+      />
     </button>
   );
 };

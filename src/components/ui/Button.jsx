@@ -1,19 +1,18 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const sizeConfig = {
   large: {
     button: "h-[48px] w-fit px-6 text-[16px]",
-    icon: "24px",
+    icon: "20px",
   },
   medium: {
     button: "h-[40px] w-fit px-5 text-[14px]",
-    icon: "20px",
+    icon: "16px",
   },
   small: {
     button: "h-[32px] w-fit px-4 text-[12px]",
-    icon: "16px",
+    icon: "12px",
   },
 };
 
@@ -23,15 +22,35 @@ const variantConfig = {
     hover:bg-sky-600 active:bg-sky-600 active:scale-[0.98]
     focus:outline-none focus:ring-4 focus:ring-sky-100
   `,
+  success: `
+    bg-emerald-500 text-white
+    hover:bg-emerald-600 active:bg-emerald-600 active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-emerald-100
+  `,
   outline: `
-  bg-transparent text-sky-500 ring-2 ring-sky-500
-  hover:bg-sky-50 active:bg-sky-100 active:scale-[0.98]
-  focus:outline-none focus:ring-4 focus:ring-sky-100
+    bg-transparent text-sky-500 ring-2 ring-sky-500
+    hover:bg-sky-50 active:bg-sky-100 active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-sky-100
   `,
   clean: `
-  bg-transparent text-sky-500
-  hover:bg-sky-50 active:bg-sky-100 active:scale-[0.98]
-  focus:outline-none focus:ring-4 focus:ring-sky-100
+    bg-transparent text-sky-500
+    hover:bg-sky-50 active:bg-sky-100 active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-sky-100
+  `,
+  rose: `
+    bg-rose-500 text-white
+    hover:bg-rose-600 active:bg-rose-600 active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-rose-100
+  `,
+  purple: `
+    bg-purple-500 text-white
+    hover:bg-purple-600 active:bg-purple-600 active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-purple-100
+  `,
+  orange: `
+    bg-orange-500 text-white
+    hover:bg-orange-600 active:bg-orange-600 active:scale-[0.98]
+    focus:outline-none focus:ring-4 focus:ring-orange-100
   `,
   disabled: {
     primary: `
@@ -46,19 +65,30 @@ const variantConfig = {
       bg-transparent text-neutral-400
       cursor-not-allowed pointer-events-none
     `,
-  }
+    rose: `
+      bg-neutral-100 text-neutral-400
+      cursor-not-allowed pointer-events-none
+    `,
+    purple: `
+      bg-neutral-100 text-neutral-400
+      cursor-not-allowed pointer-events-none
+    `,
+    orange: `
+      bg-neutral-100 text-neutral-400
+      cursor-not-allowed pointer-events-none
+    `,
+  },
 };
 
-// config
 const Button = ({
   label = "Button",
-  leftIcon = null,   // pass icon object, e.g. faPlus
-  rightIcon = null,  // pass icon object, e.g. faArrowRight
+  leftIcon = null,
+  rightIcon = null,
   size = "large",
   variant = "primary",
   onClick,
   disabled = false,
-  className = ""
+  className = "",
 }) => {
   const config = sizeConfig[size] || sizeConfig.large;
   const variantClass = disabled ? variantConfig.disabled[variant] : variantConfig[variant];
@@ -78,13 +108,9 @@ const Button = ({
         ${className}
       `}
     >
-      {leftIcon && (
-        <FontAwesomeIcon icon={leftIcon} style={{ fontSize: config.icon, display: "block" }} />
-      )}
+      {leftIcon && <FontAwesomeIcon icon={leftIcon} style={{ fontSize: config.icon, display: "block" }} />}
       <span style={{ lineHeight: 1, display: "block" }}>{label}</span>
-      {rightIcon && (
-        <FontAwesomeIcon icon={rightIcon} style={{ fontSize: config.icon, display: "block" }} />
-      )}
+      {rightIcon && <FontAwesomeIcon icon={rightIcon} style={{ fontSize: config.icon, display: "block" }} />}
     </button>
   );
 };

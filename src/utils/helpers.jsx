@@ -46,3 +46,14 @@ export function decryptData(encryptedData) {
     throw error;
   }
 }
+
+export const formatPredictionDisplay = (minutes) => {
+  if (minutes == null) return "Memuat…";
+  if (minutes === 0) return "Langsung";
+  if (minutes >= 60) {
+    const hours = Math.floor(minutes / 60);
+    const mins = Math.round(minutes % 60);
+    return `~${hours}j ${mins}m`;
+  }
+  return `~${minutes} menit`;
+};

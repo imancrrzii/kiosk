@@ -1,21 +1,25 @@
 import React, { useId, useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faStar,
-  faChevronDown,
-  faChevronUp,
-  faMagnifyingGlass,
-} from "@fortawesome/free-solid-svg-icons";
+import { faStar, faChevronDown, faChevronUp, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import CheckBox from "./CheckBox";
 
-// ─── Size config (sesuai InputField large)
-const SIZE = {
-  trigger: "h-[48px] px-5 gap-3 text-base",
-  item: "h-[48px] px-5 gap-3 text-base",
-  icon: "20px",
-  chevron: "16px",
-  check: "10px",
-  helper: "text-sm",
+const sizeConfig = {
+  large: {
+    trigger: "h-[48px] px-5 gap-3 text-base",
+    item: "h-[48px] px-5 gap-3 text-base",
+    icon: "20px",
+    chevron: "16px",
+    check: "10px",
+    helper: "text-sm",
+  },
+  medium: {
+    trigger: "h-[40px] px-4 gap-2 text-sm",
+    item: "h-[40px] px-4 gap-2 text-sm",
+    icon: "16px",
+    chevron: "14px",
+    check: "8px",
+    helper: "text-xs",
+  },
 };
 
 // ─── Trigger state config
@@ -63,12 +67,13 @@ const Dropdown = ({
   // Visibility
   showLeftIcon = true,
   showHelperText = true,
-  showSearch = false,    // tampilkan search field di dalam panel
+  showSearch = false, // tampilkan search field di dalam panel
   showItemIcons = false, // tampilkan icon di setiap item list
-  showCheckbox = false,  // tampilkan checkbox di setiap item list
+  showCheckbox = false, // tampilkan checkbox di setiap item list
   // Extras
   id: propId,
   className = "",
+  size = "large",
 }) => {
   const generatedId = useId();
   const id = propId || generatedId;
@@ -77,6 +82,7 @@ const Dropdown = ({
   const [search, setSearch] = useState("");
   const containerRef = useRef(null);
   const searchRef = useRef(null);
+  const config = sizeConfig[size] ?? sizeConfig.large;
 
   // Tutup dropdown jika klik di luar
   useEffect(() => {
@@ -105,11 +111,7 @@ const Dropdown = ({
   const selectedLabel = options.find((o) => o.value === value)?.label ?? null;
 
   // Filter options berdasarkan search
-  const filteredOptions = search
-    ? options.filter((o) =>
-        o.label.toLowerCase().includes(search.toLowerCase()),
-      )
-    : options;
+  const filteredOptions = search ? options.filter((o) => o.label.toLowerCase().includes(search.toLowerCase())) : options;
 
   const handleToggle = () => {
     if (disabled) return;
@@ -132,10 +134,7 @@ const Dropdown = ({
   };
 
   return (
-    <div
-      ref={containerRef}
-      className={`relative flex flex-col gap-1 w-full ${className}`}
-    >
+    <div ref={containerRef} className={`relative flex flex-col gap-1 w-full ${className}`}>
       {/* ── Trigger ── */}
       <button
         id={id}
@@ -149,7 +148,7 @@ const Dropdown = ({
         onKeyDown={handleKeyDown}
         className={`
           flex items-center w-full
-          ${SIZE.trigger}
+          ${config.trigger}
           ${s.ring}
           ${s.bg}
           ${s.cursor}
@@ -164,8 +163,7 @@ const Dropdown = ({
           <FontAwesomeIcon
             icon={leftIcon}
             className={`shrink-0 transition-colors duration-200 ${s.icon}`}
-            style={{ fontSize: SIZE.icon, width: SIZE.icon, height: SIZE.icon }}
-          />
+style={{ fontSize: config.icon, width: config.icon, height: config.icon }}          />
         )}
 
         {/* Value / Placeholder */}
@@ -182,9 +180,9 @@ const Dropdown = ({
           icon={isOpen ? faChevronUp : faChevronDown}
           className={`shrink-0 transition-all duration-200 ${s.icon}`}
           style={{
-            fontSize: SIZE.chevron,
-            width: SIZE.chevron,
-            height: SIZE.chevron,
+fontSize: config.chevron,
+width: config.chevron,
+height: config.chevron,
           }}
         />
       </button>
@@ -206,11 +204,7 @@ const Dropdown = ({
           {showSearch && (
             <div className="px-4 py-3 border-b border-neutral-100">
               <div className="flex items-center gap-2 h-[36px] px-3 rounded-full bg-neutral-50 ring-1 ring-neutral-200 focus-within:ring-2 focus-within:ring-sky-400 transition-all duration-150">
-                <FontAwesomeIcon
-                  icon={faMagnifyingGlass}
-                  className="text-neutral-400 shrink-0"
-                  style={{ fontSize: "14px" }}
-                />
+                <FontAwesomeIcon icon={faMagnifyingGlass} className="text-neutral-400 shrink-0" style={{ fontSize: "14px" }} />
                 <input
                   ref={searchRef}
                   type="text"
@@ -224,11 +218,9 @@ const Dropdown = ({
           )}
 
           {/* Options list */}
-          <ul className="max-h-[240px] overflow-y-auto">
+          <ul className="max-h-[160px] overflow-y-auto">
             {filteredOptions.length === 0 ? (
-              <li className="flex items-center justify-center h-[48px] text-sm text-neutral-400">
-                No options found
-              </li>
+              <li className="flex items-center justify-center h-[48px] text-sm text-neutral-400">No options found</li>
             ) : (
               filteredOptions.map((option) => {
                 const isSelected = option.value === value;
@@ -243,7 +235,7 @@ const Dropdown = ({
                     onClick={() => handleSelect(option)}
                     className={`
                       group flex items-center gap-3
-                      ${SIZE.item}
+                      ${config.item}
                       font-medium
                       transition-colors duration-150
                       ${
@@ -267,17 +259,15 @@ const Dropdown = ({
                               : "text-neutral-400 group-hover:text-sky-400"
                         }`}
                         style={{
-                          fontSize: SIZE.icon,
-                          width: SIZE.icon,
-                          height: SIZE.icon,
+                          fontSize: config.icon,
+                          width: config.icon,
+                          height: config.icon,
                         }}
                       />
                     )}
 
                     {/* Label */}
-                    <span className="flex-1 min-w-0 truncate">
-                      {option.label}
-                    </span>
+                    <span className="flex-1 min-w-0 truncate">{option.label}</span>
 
                     {/* Checkbox on the right — hanya tampil jika showCheckbox=true */}
                     {showCheckbox && (
@@ -299,11 +289,7 @@ const Dropdown = ({
 
       {/* ── Helper Text ── */}
       {showHelperText && (
-        <span
-          className={`pl-6 pr-6 block transition-colors duration-200 ${SIZE.helper} ${s.helper}`}
-        >
-          {helperText}
-        </span>
+        <span className={`pl-6 pr-6 block transition-colors duration-200 ${config.helper} ${s.helper}`}>{helperText}</span>
       )}
     </div>
   );
