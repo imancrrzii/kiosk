@@ -39,7 +39,7 @@ const sizeConfig = {
     iconSize: "10px",
   },
   medium: {
-    pill: "px-3 py-1.5 text-xs gap-2",
+    pill: "px-3 py-1 text-xs gap-2",
     iconOnly: "w-7 h-7",
     iconSize: "12px",
   },

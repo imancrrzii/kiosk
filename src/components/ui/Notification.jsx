@@ -14,7 +14,7 @@ const variantConfig = {
     closeClass: "text-white/80 hover:text-white",
   },
   info: {
-    wrapper: "bg-sky-50",
+    wrapper: "bg-sky-100",
     icon: faCircleInfo,
     iconClass: "text-sky-500",
     titleClass: "text-gray-900",
@@ -22,7 +22,7 @@ const variantConfig = {
     closeClass: "text-neutral-400 hover:text-neutral-700",
   },
   success: {
-    wrapper: "bg-green-50",
+    wrapper: "bg-green-100",
     icon: faCircleCheck,
     iconClass: "text-green-500",
     titleClass: "text-gray-900",
@@ -30,7 +30,7 @@ const variantConfig = {
     closeClass: "text-neutral-400 hover:text-neutral-700",
   },
   warning: {
-    wrapper: "bg-orange-50",
+    wrapper: "bg-orange-100",
     icon: faCircleExclamation,
     iconClass: "text-orange-500",
     titleClass: "text-gray-900",
@@ -38,7 +38,7 @@ const variantConfig = {
     closeClass: "text-neutral-400 hover:text-neutral-700",
   },
   error: {
-    wrapper: "bg-red-50",
+    wrapper: "bg-red-100",
     icon: faCircleXmark,
     iconClass: "text-red-500",
     titleClass: "text-gray-900",

@@ -7,6 +7,10 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
 import Counter from "@/pages/Counter";
 import TV from "@/pages/TV";
+import ComponentUi from "../pages/ComponentUi";
+import Dashboard from "../pages/Dashboard";
+import Header from "../components/layouts/Header";
+import Layout from "@/components/layouts/Layout";
 
 export default function Router() {
   return (
@@ -35,6 +39,11 @@ export default function Router() {
           }
         />
         <Route path="*" element={<Navigate to="/" />} />
+        <Route path="/header" element={<Header />} />
+        <Route path="/component-ui" element={<ComponentUi />} />
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
       </Routes>
     </QueryClientProvider>
   );
