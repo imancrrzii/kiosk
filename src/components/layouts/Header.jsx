@@ -1,5 +1,17 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "../ui/Button";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faMagnifyingGlass,
+  faHeart,
+  faBagShopping,
+  faChevronDown,
+  faArrowUpFromBracket,
+  faRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "@/hooks/useAuth";
 import logo from "../../assets/images/logo-bsb.png";
 import avatarDefault from "../../assets/images/avatar-albert.png";
 import { StatusBadge } from "@/components/counter/StatusBadge";
@@ -11,6 +23,19 @@ const Header = ({ onProfileClick, showCounterInfo = false, counterStatus }) => {
   const userName = user?.name || "Guest";
   const role = user?.role || "GUEST";
   const isCounterRole = hasAnyRole(["CS", "TELLER"]);
+
+const Header = ({
+  userName = "Robet Davis Chaniago",
+  role = "Costumer Service",
+  onProfileClick,
+}) => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/login", { replace: true });
+  };
 
   return (
     <header className="w-full fixed h-20 bg-white border-b border-neutral-100 shadow-sm top-0 z-50">
@@ -42,8 +67,13 @@ const Header = ({ onProfileClick, showCounterInfo = false, counterStatus }) => {
             </div>
           </button>
 
-          {/* Logout */}
-          <Button variant="clean" label="Keluar" rightIcon={faRightFromBracket} size="medium" onClick={logout} />
+          <Button
+            variant="clean"
+            label="Keluar"
+            rightIcon={faRightFromBracket}
+            size="medium"
+            onClick={handleLogout}
+          />
         </div>
       </div>
     </header>

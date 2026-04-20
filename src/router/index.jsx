@@ -30,7 +30,21 @@ export default function Router() {
           <Route path="topup" element={<KioskTopUp />} />
           <Route path="queue" element={<KioskQueue />} />
         </Route>
+        <Route path="/kiosk" element={<Kiosk />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/tv" element={<TV />} />
+        
+        {/* Protected Route untuk Counter (TELLER & CS) */}
+        <Route
+          path="/counter"
+          element={
+            <ProtectedRoute allowedRoles={["TELLER", "CS"]}>
+              <Counter />
+            </ProtectedRoute>
+          }
+        />
 
+        {/* Protected Route untuk Dashboard (ADMIN) dengan Layout */}
         <Route
           element={
             <ProtectedRoute allowedRoles={["TELLER", "CS", "ADMIN"]}>

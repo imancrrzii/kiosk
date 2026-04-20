@@ -1,9 +1,19 @@
 import Table from "../table/Table";
-import { dashboardTableDummy } from "./dashboardTableDummy";
 import Badge from "../ui/Badge";
 
 
-const DashboardTable = () => {
+const DashboardTable = ({ data = [] }) => {
+  // Map API data ke format tabel
+  const tableData = data.map((item, index) => ({
+    no: index + 1,
+    name: item.employee,
+    role: item.role === "CS" ? "Customer Service" : item.role === "TELLER" ? "Teller" : item.role,
+    total: item.total_done,
+    avgTime: `${item.avg_minutes} menit`,
+    skip: item.total_skip,
+    status: item.status,
+  }));
+
   return (
     <Table
       columns={[
@@ -44,21 +54,23 @@ const DashboardTable = () => {
           cellClassName:"text-center",
           render: (value) => {
             const variantMap = {
+              "Baik": "success",
               "Aktif": "success",
               "Normal": "warning",
               "Perlu Perhatian": "error",
             };
             return (
 
-              <Badge label={value} color={variantMap[value]} variant="outline" size="medium" />
+              <Badge label={value} color={variantMap[value] || "default"} variant="outline" size="medium" />
             );
           }
         },
       ]}
 
-      data={dashboardTableDummy}
+      data={tableData}
     />
   );
 };
 
 export default DashboardTable;
+

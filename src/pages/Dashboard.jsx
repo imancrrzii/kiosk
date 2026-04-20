@@ -29,21 +29,41 @@ import {
   Pie,
   Legend,
 } from "recharts";
+import { useDashboard } from "@/hooks/useDashboard";
+import { useNotification } from "@/hooks/useNotification";
+import { useAuth } from "@/hooks/useAuth";
 
-const hourlyData = [
-  { name: "08:00", high: 260 },
-  { name: "09:00", high: 400 },
-  { name: "10:00", high: 560 },
-  { name: "11:00", high: 700 },
-  { name: "12:00", high: 480 }, // biasanya turun (jam istirahat)
-  { name: "13:00", high: 600 },
-  { name: "14:00", high: 760 },
-  { name: "15:00", high: 620 },
-  { name: "16:00", high: 420 },
-];
+// Mapping tipe layanan ke label Indonesia
+const SERVICE_TYPE_LABELS = {
+  GENERAL: "Umum",
+  PAYMENT: "Pembayaran",
+  TOPUP: "Top Up",
+  ACCOUNT_REG: "Registrasi",
+};
+
+// Warna untuk pie chart berdasarkan tipe layanan
+const SERVICE_TYPE_COLORS = {
+  GENERAL: "var(--color-amber-500)",
+  PAYMENT: "var(--color-blue-500)",
+  TOPUP: "var(--color-emerald-500)",
+  ACCOUNT_REG: "var(--color-purple-500)",
+};
 
 const Dashboard = () => {
   const [currentTime, setCurrentTime] = React.useState(new Date());
+  const {
+    isLoading,
+    isError,
+    totalQueue,
+    totalQueueDiff,
+    avgServiceTime,
+    avgServiceTimeDiff,
+    skipRate,
+    skipRateDiff,
+    counterPerformance,
+    busyHours,
+    serviceComposition,
+  } = useDashboard();
 
   React.useEffect(() => {
     const timer = setInterval(() => {
@@ -65,25 +85,76 @@ const Dashboard = () => {
     second: "2-digit",
   });
 
+  // Transform busy_hours untuk BarChart
+  const hourlyData = busyHours.map((item) => ({
+    name: item.hour,
+    high: item.total,
+  }));
+
+  // Transform service_composition untuk PieChart
+  const pieData = serviceComposition.map((item) => ({
+    name: SERVICE_TYPE_LABELS[item.type] || item.type,
+    value: item.percentage,
+    color: SERVICE_TYPE_COLORS[item.type] || "var(--color-gray-400)",
+  }));
+
+  // Format diff sebagai persentase
+  const formatDiff = (diff) => {
+    if (diff === 0) return "0%";
+    return diff > 0 ? `+${diff}%` : `${diff}%`;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen pt-24">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 border-4 border-sky-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-neutral-500 font-medium">
+            Memuat data dashboard...
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex items-center justify-center h-screen pt-24">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <p className="text-red-500 font-semibold">
+            Gagal memuat data dashboard
+          </p>
+          <p className="text-neutral-400 text-sm">
+            Silakan coba refresh halaman
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className=" space-y-4 mt-20">
+    <div className=" space-y-4 pt-24">
       {/* Header & Stats Cards Container */}
       <div className="space-y-6 p-6 bg-white rounded-3xl border-2 border-neutral-100">
         <div className="flex items-center justify-between">
           <h1>Laporan Kinerja Loket</h1>
           <div className="px-4 py-1.5 w-fit bg-white rounded-2xl border border-sky-300 text-sm font-semibold flex items-center gap-3">
-            <span className="text-sky-600 uppercase tracking-wider text-[11px] font-bold bg-sky-50 px-2 py-0.5 rounded-md">Real Time</span>
+            <span className="text-sky-600 uppercase tracking-wider text-[11px] font-bold bg-sky-50 px-2 py-0.5 rounded-md">
+              Real Time
+            </span>
             <span className="text-gray-600">{formattedDate}</span>
             <span className="w-1.5 h-1.5 rounded-full bg-neutral-200"></span>
-            <span className="text-gray-900 font-mono tracking-wider">{formattedTime}</span>
+            <span className="text-gray-900 font-mono tracking-wider">
+              {formattedTime}
+            </span>
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <DashboardCard
             title="Total Antrian Selesai"
-            value="260"
-            percentage="+10%"
+            value={totalQueue.toString()}
+            percentage={formatDiff(totalQueueDiff)}
             description="Dibandingkan kemarin"
             icon={faUsers}
             color="green"
@@ -91,8 +162,8 @@ const Dashboard = () => {
 
           <DashboardCard
             title="Rata-rata waktu layanan"
-            value="7,4 Menit"
-            percentage="+10%"
+            value={`${avgServiceTime} Menit`}
+            percentage={formatDiff(avgServiceTimeDiff)}
             description="Efisiensi meningkat"
             icon={faClock}
             color="purple"
@@ -100,13 +171,13 @@ const Dashboard = () => {
 
           <DashboardCard
             title="Tingkat Pengabaian Antrian"
-            value="3,2%"
-            percentage="-10%"
+            value={`${skipRate}%`}
+            percentage={formatDiff(skipRateDiff)}
             description="dari kemarin"
             icon={faPersonCircleExclamation}
             color="red"
-            trendIcon={faArrowDown}
-            badgeColor="error"
+            trendIcon={skipRateDiff < 0 ? faArrowDown : undefined}
+            badgeColor={skipRateDiff < 0 ? "error" : undefined}
           />
 
           <DashboardCard
@@ -120,15 +191,13 @@ const Dashboard = () => {
         </div>
       </div>
 
-
-
       <div className="p-4 bg-white rounded-3xl border-2 border-neutral-100">
         <h4 className="mb-4">Kinerja Pegawai</h4>
-        <DashboardTable />
+        <DashboardTable data={counterPerformance} />
       </div>
 
       {/* Jam Sibuk dan Komposisi Layanan */}
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1 gap-6">
         {/* Jam Sibuk */}
         <div className="p-4 bg-white rounded-3xl border-2 border-neutral-100">
           <h4>Jam Sibuk</h4>
@@ -198,28 +267,7 @@ const Dashboard = () => {
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
-                  data={[
-                    {
-                      name: "Pembayaran",
-                      value: 42,
-                      color: "var(--color-blue-500)",
-                    },
-                    {
-                      name: "Top Up",
-                      value: 25,
-                      color: "var(--color-emerald-500)",
-                    },
-                    {
-                      name: "Umum",
-                      value: 20,
-                      color: "var(--color-amber-500)",
-                    },
-                    {
-                      name: "Registrasi",
-                      value: 13,
-                      color: "var(--color-purple-500)",
-                    },
-                  ]}
+                  data={pieData}
                   cx="50%"
                   cy="50%"
                   innerRadius={60}
@@ -230,28 +278,7 @@ const Dashboard = () => {
                     `${name} ${(percent * 100).toFixed(0)}%`
                   }
                 >
-                  {[
-                    {
-                      name: "Pembayaran",
-                      value: 42,
-                      color: "var(--color-blue-500)",
-                    },
-                    {
-                      name: "Top Up",
-                      value: 25,
-                      color: "var(--color-emerald-500)",
-                    },
-                    {
-                      name: "Umum",
-                      value: 20,
-                      color: "var(--color-amber-500)",
-                    },
-                    {
-                      name: "Registrasi",
-                      value: 13,
-                      color: "var(--color-purple-500)",
-                    },
-                  ].map((entry, index) => (
+                  {pieData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>

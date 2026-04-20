@@ -31,4 +31,11 @@ export const API_ENDPOINTS = {
   
   // OCR KTP
   OCR_HYBRID: "/api/hybrid",
+
+  // Admin endpoints
+  ADMIN_LOGIN: "/api/admin/login",
+  ADMIN_LOGOUT: "/api/admin/logout",
+  ADMIN_DASHBOARD_STATS: "/api/backoffice/dashboard",
+  ADMIN_QUEUE_STATS: "/api/admin/queue/stats",
+  ADMIN_WAITING_QUEUES: "/api/admin/queue/waiting",
 };

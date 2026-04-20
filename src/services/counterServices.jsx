@@ -16,6 +16,7 @@ export const CounterService = {
     const response = await http.post(API_ENDPOINTS.COUNTER_LOGOUT);
     return response.data;
   },
+  
 
   callNext: async () => {
     const response = await http.post(API_ENDPOINTS.COUNTER_NEXT);
