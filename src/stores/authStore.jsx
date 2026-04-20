@@ -36,7 +36,7 @@ const useAuthStore = create(
       },
 
       logout: () => {
-        localStorage.removeItem("queue-auth-storage"); // 🔥 penting
+        localStorage.removeItem("queue-auth-storage");
         set({
           token: null,
           user: null,

@@ -57,7 +57,7 @@ export default function KioskWrapper({ children, menuCards = [] }) {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-blue-50 flex flex-col p-6 font-sans overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-50 via-sky-50 to-blue-50 flex flex-col py-6 px-16 font-sans overflow-hidden">
       <style>{`
         @keyframes pulseBadge {
           0%, 100% { box-shadow: 0 0 0 0 rgba(99,102,241,0.35); }
@@ -66,12 +66,9 @@ export default function KioskWrapper({ children, menuCards = [] }) {
         .badge-pulse { animation: pulseBadge 2.6s ease-in-out infinite; }
       `}</style>
 
-      {/* Animated blobs */}
       <AnimatedBackground />
 
-      {/* Content - flex-grow untuk mengisi space */}
       <div className="relative z-10 w-full max-w-5xl mx-auto flex-grow flex flex-col items-center justify-center">
-        {/* ── Badge ── */}
         <div
           className={`mb-2 transition-all duration-500 ${headerVisible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"}`}
           style={{ transitionDelay: "0ms" }}
@@ -82,7 +79,6 @@ export default function KioskWrapper({ children, menuCards = [] }) {
           </span>
         </div>
 
-        {/* ── Title ── */}
         <div
           className={`mb-1 text-center transition-all duration-500 ${headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           style={{ transitionDelay: "80ms" }}
@@ -100,7 +96,6 @@ export default function KioskWrapper({ children, menuCards = [] }) {
           </h1>
         </div>
 
-        {/* ── Subtitle ── */}
         <div
           className={`mb-8 text-center transition-all duration-500 ${headerVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           style={{ transitionDelay: "160ms" }}
@@ -110,7 +105,6 @@ export default function KioskWrapper({ children, menuCards = [] }) {
           </p>
         </div>
 
-        {/* ── Cards or children ── */}
         {menuCards.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
             {menuCards.map((card, i) => (
@@ -122,7 +116,6 @@ export default function KioskWrapper({ children, menuCards = [] }) {
         )}
       </div>
 
-      {/* ── Footer hint - sekarang di luar content wrapper ── */}
       <div
         className={`relative z-0 w-full text-center py-2 transition-all duration-500 ${headerVisible ? "opacity-100" : "opacity-0"}`}
         style={{ transitionDelay: "700ms" }}

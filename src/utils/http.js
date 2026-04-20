@@ -4,14 +4,14 @@ import { API_BASE_URL } from "@/constant/api";
 
 const http = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 60000, 
+  timeout: 60000,
   headers: {
     "Content-Type": "application/json",
   },
 });
 
 http.interceptors.request.use(
-  async (config) => {
+  (config) => {
     const token = useAuthStore.getState().getToken();
 
     if (token) {
@@ -20,27 +20,24 @@ http.interceptors.request.use(
 
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error),
 );
 
 http.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
-      window.location.href = "/login";
+  (error) => {
+    const status = error.response?.status;
+    const url = error.config?.url || "";
+
+    if (status === 401 && !url.includes("/login")) {
+      const { logout } = useAuthStore.getState();
+      logout();
     }
 
-    const errorMessage =
-      error.response?.data?.message ||
-      error.response?.data?.error ||
-      error.message ||
-      "Terjadi kesalahan";
+    const errorMessage = error.response?.data?.message || error.response?.data?.error || error.message || "Terjadi kesalahan";
 
     return Promise.reject(new Error(errorMessage));
-  }
+  },
 );
 
 export default http;

@@ -34,17 +34,17 @@ const colorConfig = {
 
 const sizeConfig = {
   small: {
-    pill: "px-2.5 py-0.5 text-[10px] gap-1.5",
+    pill: "px-2.5 py-1 text-[10px] gap-1.5",
     iconOnly: "w-6 h-6",
     iconSize: "10px",
   },
   medium: {
-    pill: "px-3 py-1 text-xs gap-2",
+    pill: "px-3 py-1.5 text-xs gap-2",
     iconOnly: "w-7 h-7",
     iconSize: "12px",
   },
   large: {
-    pill: "px-4 py-1.5 text-sm gap-2.5",
+    pill: "px-4 py-2 text-sm gap-2.5",
     iconOnly: "w-9 h-9",
     iconSize: "14px",
   },

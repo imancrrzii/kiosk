@@ -26,12 +26,6 @@ export default function LoginPage() {
     },
   });
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/counter", { replace: true });
-    }
-  }, [isAuthenticated, navigate]);
-
   const onSubmit = async (data) => {
     const result = await login(data.username, data.password);
 
@@ -39,7 +33,7 @@ export default function LoginPage() {
       showNotification(`Selamat datang, ${result.user.name}!`, "success");
       switch (result.user.role) {
         case "ADMIN":
-          navigate("/admin", { replace: true });
+          navigate("/dashboard", { replace: true });
           break;
         case "TELLER":
         case "CS":
@@ -70,7 +64,13 @@ export default function LoginPage() {
           <p className="text-sm text-gray-400 mt-1">Bank · Sistem Antrian</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-4">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSubmit(onSubmit)(e);
+          }}
+          className="bg-white rounded-2xl shadow-xl border border-gray-100 p-6 space-y-4"
+        >
           <div>
             <Controller
               name="username"

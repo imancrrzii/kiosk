@@ -51,22 +51,23 @@ export default function TVInfoTicker() {
     <div
       className="flex items-center overflow-hidden"
       style={{
-        background: "#060c1a",
-        borderBottom: "1px solid rgba(255,255,255,0.04)",
-        height: 34,
+        background: "linear-gradient(to right, #f0f9ff, #e0f2fe, #dbeafe)",
+        borderBottom: "1px solid #bae6fd",
+        height: 36,
       }}
     >
       {/* LEFT LABEL */}
       <div
         className="flex items-center gap-2 px-4 shrink-0"
         style={{
-          background: "#1d4ed8",
+          background: "linear-gradient(135deg, #0ea5e9, #0284c7)",
           height: "100%",
-          minWidth: 80,
+          minWidth: 90,
+          boxShadow: "2px 0 8px rgba(14, 165, 233, 0.2)",
         }}
       >
-        <FontAwesomeIcon icon={faCircleInfo} className="text-blue-200 text-[10px]" />
-        <span className="text-[10px] font-bold text-blue-100 tracking-[2px] uppercase">
+        <FontAwesomeIcon icon={faCircleInfo} className="text-sky-100 text-[11px]" />
+        <span className="text-[10px] font-bold text-white tracking-[2px] uppercase">
           Info
         </span>
       </div>
@@ -84,9 +85,9 @@ export default function TVInfoTicker() {
             <div key={index} className="flex items-center gap-2">
               <FontAwesomeIcon
                 icon={item.icon}
-                className="text-blue-500 text-[10px]"
+                className="text-sky-600 text-[10px]"
               />
-              <span className="text-[10px]">{item.text}</span>
+              <span className="text-[10px] text-gray-700 font-medium">{item.text}</span>
             </div>
           ))}
         </div>

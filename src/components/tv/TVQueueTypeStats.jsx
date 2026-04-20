@@ -9,37 +9,37 @@ export default function TVQueueTypeStats({ queueTypeStats, totalWaiting }) {
 
   const colorMap = {
     rose: {
-      bg: "rgba(16,185,129,0.1)",
-      border: "rgba(16,185,129,0.2)",
-      text: "#34d399",
+      bg: "linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)",
+      border: "#6ee7b7",
+      text: "#059669",
     },
     blue: {
-      bg: "rgba(59,130,246,0.1)",
-      border: "rgba(59,130,246,0.2)",
-      text: "#60a5fa",
+      bg: "linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)",
+      border: "#93c5fd",
+      text: "#2563eb",
     },
     purple: {
-      bg: "rgba(139,92,246,0.1)",
-      border: "rgba(139,92,246,0.2)",
-      text: "#a78bfa",
+      bg: "linear-gradient(135deg, #e9d5ff 0%, #d8b4fe 100%)",
+      border: "#c084fc",
+      text: "#9333ea",
     },
     orange: {
-      bg: "rgba(251,191,36,0.1)",
-      border: "rgba(251,191,36,0.2)",
-      text: "#fbbf24",
+      bg: "linear-gradient(135deg, #fed7aa 0%, #fdba74 100%)",
+      border: "#fb923c",
+      text: "#ea580c",
     },
   };
 
   return (
     <div
-      className="flex items-center gap-5 px-8 py-2"
+      className="flex items-center gap-5 px-8 py-2.5"
       style={{
-        background: "rgba(255,255,255,0.02)",
-        borderBottom: "1px solid rgba(255,255,255,0.04)",
+        background: "linear-gradient(to right, #f8fafc, #f0f9ff)",
+        borderBottom: "1px solid #e0f2fe",
       }}
     >
-      <span className="text-[9px] text-slate-600 tracking-[3px] uppercase flex items-center gap-1.5 shrink-0">
-        <FontAwesomeIcon icon={faUsers} className="text-slate-600" />
+      <span className="text-[9px] text-sky-700 tracking-[3px] uppercase flex items-center gap-1.5 shrink-0 font-semibold">
+        <FontAwesomeIcon icon={faUsers} className="text-sky-600" />
         Menunggu per Layanan:
       </span>
 
@@ -57,12 +57,11 @@ export default function TVQueueTypeStats({ queueTypeStats, totalWaiting }) {
             style={{
               background: colors.bg,
               border: `1px solid ${colors.border}`,
+              boxShadow: "0 2px 6px rgba(0, 0, 0, 0.04)",
             }}
           >
-            {Icon && <Icon size={11} style={{ color: colors.text }} />}
-            <span className="text-[10px] font-semibold text-slate-400">
-              {config.label}
-            </span>
+            {Icon && <FontAwesomeIcon icon={Icon} style={{ color: colors.text, fontSize: 11 }} />}
+            <span className="text-[10px] font-semibold text-gray-700">{config.label}</span>
             <span className="text-[11px] font-black" style={{ color: colors.text }}>
               {count}
             </span>
@@ -70,9 +69,8 @@ export default function TVQueueTypeStats({ queueTypeStats, totalWaiting }) {
         );
       })}
 
-      <span className="ml-auto text-[10px] text-slate-700">
-        Total antrian:{" "}
-        <span className="text-slate-500 font-bold">{totalWaiting}</span>
+      <span className="ml-auto text-[10px] text-gray-600">
+        Total antrian: <span className="text-sky-700 font-bold">{totalWaiting}</span>
       </span>
     </div>
   );

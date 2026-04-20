@@ -1,9 +1,6 @@
 import { useState, useCallback } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faMoneyBill,
-  faUser,
-  faRightFromBracket,
   faWifi3,
   faCircleCheck,
   faClock,
@@ -14,6 +11,7 @@ import {
   faPlay,
   faSlidersH,
   faAdjust,
+  faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useWebSocket } from "@/hooks/useWebSocket";
 import { useNotification } from "@/hooks/useNotification";
@@ -22,14 +20,12 @@ import { useCounter } from "@/hooks/useCounter";
 import Button from "@/components/ui/Button";
 import NotificationContainer from "@/components/ui/NotificationContainer";
 import { QueueTypeBadge } from "@/components/ui/QueueTypeBadge";
-import { StatusBadge } from "@/components/counter/StatusBadge";
 import { QueueSidebar } from "@/components/counter/QueueSidebar";
 import { StatsPanel } from "@/components/counter/StatsPanel";
-import { useNavigate } from "react-router-dom";
+import { QueueDetailModal } from "@/components/counter/QueueDetailModal";
 
 export default function Counter() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
   const {
     counter,
     stats,
@@ -52,9 +48,10 @@ export default function Counter() {
     queue_type_stats: {},
   });
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const { notifications, show: showNotification, hide: hideNotification } = useNotification();
 
-  // WebSocket handler
   const handleWebSocketMessage = useCallback(
     (msg) => {
       if (msg.type === "queue_update") {
@@ -67,7 +64,6 @@ export default function Counter() {
 
   useWebSocket(handleWebSocketMessage);
 
-  // Counter Actions dengan Notification
   const handleCounterLogin = async () => {
     try {
       await counterLogin();
@@ -125,17 +121,6 @@ export default function Counter() {
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      navigate("/login", { replace: true });
-      showNotification("Anda telah keluar", "info");
-    } catch (err) {
-      showNotification(err.message, "error");
-    }
-  };
-
-  // Computed values
   const isBusy = counter?.status === "BUSY";
   const isOffline = !counter || counter.status === "OFFLINE";
   const myService = user?.role;
@@ -149,34 +134,9 @@ export default function Counter() {
   return (
     <div className="min-h-screen bg-gray-50 font-sans">
       <NotificationContainer notifications={notifications} onClose={hideNotification} />
-
-      {/* Navbar */}
-      <nav className="bg-white border-b border-gray-100 px-6 py-4 flex items-center justify-between sticky top-0 z-10 shadow-sm">
-        <div className="flex items-center gap-3">
-          <div
-            className={`w-9 h-9 rounded-xl flex items-center justify-center ${
-              user?.role === "TELLER" ? "bg-sky-500" : "bg-purple-500"
-            }`}
-          >
-            <FontAwesomeIcon icon={user?.role === "TELLER" ? faMoneyBill : faUser} className="text-white" size="sm" />
-          </div>
-          <div>
-            <div className="font-bold text-gray-900 text-sm">{user?.name}</div>
-            <div className="text-xs text-gray-400 uppercase tracking-wider">
-              {user?.role} · {user?.counter_name || "Tidak ada meja"}
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-3">
-          <StatusBadge status={counter?.status || "OFFLINE"} />
-          <Button variant="clean" size="small" onClick={handleLogout} leftIcon={faRightFromBracket} label="Keluar" />
-        </div>
-      </nav>
-
-      {/* Main Content */}
+      <QueueDetailModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} queue={currentQueueDetail} />
       <div className="max-w-5xl mx-auto px-6 py-8 grid grid-cols-[1fr_300px] gap-6">
         <div className="space-y-5">
-          {/* Counter Panel */}
           <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
             <div className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-5 flex items-center gap-2">
               <FontAwesomeIcon icon={faSlidersH} size="sm" />
@@ -213,11 +173,22 @@ export default function Counter() {
                         Sedang Dilayani
                       </div>
                       <div className="text-8xl font-black text-sky-600 leading-none">{counter.current_queue_number}</div>
-                      {currentQueueDetail?.queue_type && (
-                        <div className="mt-3 flex justify-center">
-                          <QueueTypeBadge queueType={currentQueueDetail.queue_type} />
-                        </div>
-                      )}
+                      <div className="flex flex-col md:flex-row gap-2 mt-3 justify-center items-center">
+                        {currentQueueDetail?.queue_type && (
+                          <div className="mt-3 flex justify-center">
+                            <QueueTypeBadge queueType={currentQueueDetail.queue_type} />
+                          </div>
+                        )}
+                        {currentQueueDetail && (
+                          <button
+                            onClick={() => setIsModalOpen(true)}
+                            className="mt-3 px-3 py-1.5 bg-linear-to-br from-sky-400 to-sky-600 hover:bg-linear-to-br hover:from-sky-500 hover:to-sky-700 text-sky-50 font-semibold text-sm rounded-full transition-colors inline-flex items-center gap-2"
+                          >
+                            <FontAwesomeIcon icon={faInfoCircle} size="sm" />
+                            <span className="text-xs">Lihat Selengkapnya</span>
+                          </button>
+                        )}
+                      </div>
                     </>
                   ) : (
                     <>
@@ -284,8 +255,6 @@ export default function Counter() {
 
           <StatsPanel stats={stats} />
         </div>
-
-        {/* Sidebar - Queue List */}
         <QueueSidebar waiting={myWaiting} />
       </div>
     </div>

@@ -1,66 +1,4 @@
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-// export default function MainMenuCard({ 
-//   Icon, 
-//   badge1,
-//   badge2,
-//   title, 
-//   desc, 
-//   imageUrl,
-//   onClick 
-// }) {
-//   return (
-//     <button
-//       onClick={onClick}
-//       className="
-//         w-full h-full rounded-3xl overflow-hidden
-//         bg-olive-300
-//         cursor-pointer transition-all duration-400
-//         hover:-translate-y-2 hover:shadow-2xl hover:bg-olive-600
-//         group
-//         flex flex-col
-//         relative
-//       "
-//     >
-//       {/* Icon Background - Animated */}
-//       <div className="absolute inset-0 flex items-end justify-center pb-8 pointer-events-none overflow-hidden">
-//         <FontAwesomeIcon 
-//           icon={Icon} 
-//           className="text-olive-400/50 group-hover:text-olive-700/40 transition-all duration-600 group-hover:scale-110 group-hover:rotate-6" 
-//           style={{ fontSize: '180px' }}
-//         />
-//       </div>
-
-//       {/* Header - Fixed Height */}
-//       <div className="p-6 pb-4 flex-shrink-0 relative z-10">
-//         <div className="flex items-center justify-between mb-4">
-//           <div className="flex gap-2">
-//             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-white text-olive-900 group-hover:bg-olive-50 transition-colors">
-//               {badge1}
-//             </span>
-//             <span className="px-3 py-1 rounded-full text-[11px] font-bold bg-white text-olive-900 group-hover:bg-olive-50 transition-colors">
-//               {badge2}
-//             </span>
-//           </div>
-//           <div className="w-7 h-7 rounded-full flex items-center justify-center bg-olive-500 group-hover:bg-olive-700 flex-shrink-0 transition-colors">
-//             <FontAwesomeIcon icon={Icon} className="text-white text-xs" />
-//           </div>
-//         </div>
-        
-//         <h3 className="mb-2 font-black leading-tight group-hover:text-white transition-colors h-[60px] flex items-center text-left">
-//           {title}
-//         </h3>
-        
-//         <p className="text-xs text-gray-800 leading-relaxed h-[84px] group-hover:text-white transition-colors text-left">
-//           {desc}
-//         </p>
-//       </div>
-//     </button>
-//   );
-// }
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { badge } from "fontawesome";
 import { useState } from "react";
 
 const colorVariants = [
@@ -140,10 +78,7 @@ export default function MainMenuCard({
         relative
       `}
     >
-      {/* Inner White Card */}
       <div className="w-full h-full bg-white rounded-4xl shadow-lg flex flex-col relative overflow-hidden">
-        
-        {/* Icon Background - Animated */}
         <div className="absolute inset-0 flex items-end justify-center pb-8 pointer-events-none overflow-hidden">
           <FontAwesomeIcon 
             icon={Icon} 
@@ -152,7 +87,6 @@ export default function MainMenuCard({
           />
         </div>
 
-        {/* Header - Fixed Height */}
         <div className="py-6 px-5 flex-shrink-0 relative z-10">
           <div className="flex items-center justify-between mb-4">
             <div className="flex gap-2">

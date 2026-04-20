@@ -1,24 +1,25 @@
-import { faWifi, faWifi3 } from "@fortawesome/free-solid-svg-icons";
+import { faWifi, faWifiStrong } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { faWifiSlash } from "@fortawesome/free-solid-svg-icons";
 
 export default function TVCounterCard({ counter, color = "blue" }) {
   const busy = counter.status === "BUSY";
 
   const colorConfig = {
     blue: {
-      num: "text-blue-400",
-      bg: "rgba(59,130,246,0.07)",
-      border: "rgba(59,130,246,0.2)",
-      dot: "bg-blue-400",
-      label: "text-blue-500",
+      num: "text-sky-600",
+      bg: "linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)",
+      border: "#7dd3fc",
+      dot: "bg-sky-500",
+      label: "text-sky-700",
+      shadow: "0 4px 12px rgba(14, 165, 233, 0.15)",
     },
     purple: {
-      num: "text-purple-400",
-      bg: "rgba(139,92,246,0.07)",
-      border: "rgba(139,92,246,0.2)",
-      dot: "bg-purple-400",
-      label: "text-purple-500",
+      num: "text-purple-600",
+      bg: "linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)",
+      border: "#c084fc",
+      dot: "bg-purple-500",
+      label: "text-purple-700",
+      shadow: "0 4px 12px rgba(168, 85, 247, 0.15)",
     },
   };
 
@@ -26,41 +27,35 @@ export default function TVCounterCard({ counter, color = "blue" }) {
 
   return (
     <div
-      className="rounded-xl p-3.5 transition-all"
+      className="rounded-2xl p-3.5 transition-all"
       style={{
-        background: busy ? cfg.bg : "rgba(255,255,255,0.02)",
-        border: `1px solid ${busy ? cfg.border : "rgba(255,255,255,0.04)"}`,
+        background: busy ? cfg.bg : "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)",
+        border: `1px solid ${busy ? cfg.border : "#e2e8f0"}`,
+        boxShadow: busy ? cfg.shadow : "0 2px 8px rgba(0,0,0,0.04)",
       }}
     >
-      <div className="text-[9px] tracking-[2px] text-slate-600 uppercase font-semibold mb-2">
-        {counter.counter_name}
-      </div>
+      <div className="text-[9px] tracking-[2px] text-gray-500 uppercase font-semibold mb-1">{counter.counter_name}</div>
 
       {busy ? (
         <>
-          <div className={`text-[38px] font-black leading-none ${cfg.num}`}>
-            {counter.current_queue_number}
-          </div>
-          <div
-            className={`mt-1.5 text-[9px] font-bold tracking-wider flex items-center gap-1.5 ${cfg.label}`}
-          >
+          <div className={`text-[36px] font-black leading-none ${cfg.num}`}>{counter.current_queue_number}</div>
+          <div className={`mt-1.5 text-[9px] font-bold tracking-wider flex items-center gap-1.5 ${cfg.label}`}>
             <div className={`w-1.5 h-1.5 rounded-full ${cfg.dot} animate-pulse`} />
             MELAYANI
           </div>
         </>
       ) : (
         <>
-          <div className="text-slate-700 text-[13px] italic mt-1">Kosong</div>
-          <div className="text-[9px] text-slate-700 mt-1.5 flex items-center gap-1">
+          <div className="text-gray-400 text-[13px] italic mt-1">Kosong</div>
+          <div className="text-[9px] text-gray-500 mt-1.5 flex items-center gap-1">
             {counter.status === "IDLE" ? (
               <>
-                {/* <Zap size={9} className="text-slate-700" /> */}
-                <FontAwesomeIcon icon={faWifi} className="text-[9px]" />
+                <FontAwesomeIcon icon={faWifi} className="text-[9px] text-green-500" />
                 Siap
               </>
             ) : (
               <>
-                <FontAwesomeIcon icon={faWifi3} className="text-[9px]" />
+                <FontAwesomeIcon icon={faWifiStrong} className="text-[9px] text-gray-400" />
                 Offline
               </>
             )}

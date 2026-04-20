@@ -89,12 +89,14 @@ const Button = ({
   onClick,
   disabled = false,
   className = "",
+  type = "button",
 }) => {
   const config = sizeConfig[size] || sizeConfig.large;
   const variantClass = disabled ? variantConfig.disabled[variant] : variantConfig[variant];
 
   return (
     <button
+      type={type}
       onClick={onClick}
       disabled={disabled}
       className={`
